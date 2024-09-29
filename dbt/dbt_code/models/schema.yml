@@ -1,0 +1,9 @@
+models:
+  - name: dim_auxiliary
+    description: "Dimension table for auxiliary attributes like experience required and driving license."
+    columns:
+      - name: auxiliary_id
+        description: "Surrogate key for auxiliary attributes."
+        tests:
+          - unique
+          - not_null
