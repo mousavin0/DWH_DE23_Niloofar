@@ -21,7 +21,7 @@ Below is a representation of the data model in our warehouse. Note that foreign 
 I created specific roles for DLT, DBT, and Reporting, which have been assigned to my account (`niloofarmoosavi`). 
 
 - **DLT**: Used for ingesting 100 results with the search keyword "gymnasielärare" from the Jobsearch API.
-- **DBT**: Utilized for creating data models in the warehouse and marts schemas, conducting testing, and generating automated documentation.
+- **DBT**: Utilized for creating data models in the warehouse and marts schemas.
 - **REPORTER**: Utilized for creating the dashboard
 
 ### Data Lineage
