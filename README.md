@@ -22,10 +22,10 @@ I created specific roles for DLT, DBT, and Reporting, which have been assigned t
 
 - **DLT**: Used for ingesting 100 results with the search keyword "gymnasielärare" from the Jobsearch API.
 - **DBT**: Utilized for creating data models in the warehouse and marts schemas, conducting testing, and generating automated documentation.
-- **REPORTER**: Utilized for creating 
+- **REPORTER**: Utilized for creating the dashboard
 
 ### Data Lineage
 
-DBT has built in capabilites like test and documentaion. Here is an automated view of the data lineage created using dbt:
+DBT has built in capabilites like test and documentaion. Below is an automated view of the data lineage created using dbt. Note that source tables are ephemeral, meaning they are not stored in snowflake.
 
 ![Lineage](lineage.png)
