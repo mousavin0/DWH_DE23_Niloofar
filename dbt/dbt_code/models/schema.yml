@@ -1,4 +1,6 @@
 models:
+
+
   - name: dim_auxiliary
     description: "Dimension table for auxiliary attributes like experience required and driving license."
     columns:
@@ -7,3 +9,88 @@ models:
         tests:
           - unique
           - not_null
+
+
+
+  - name: dim_employer
+    description: "Dimension table for employer details."
+    columns:
+      - name: employer_id
+        description: "Surrogate key for employers."
+        tests:
+          - unique
+          - not_null
+
+      - name: employer_name
+        description: "Name of the employer."
+        tests:
+          - not_null
+
+  - name: dim_job_details
+    description: "Dimension table for job details."
+    columns:
+      - name: job_details_id
+        description: "Surrogate key for job details."
+        tests:
+          - unique
+          - not_null
+
+      - name: headline
+        description: "Job headline."
+        tests:
+          - not_null
+
+      - name: employment_type
+        description: "Type of employment."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ["Vanlig anställning", "Behovsanställning"]
+
+  - name: fct_job_ads
+    description: "Fact table for job ads with links to dimensions."
+    columns:
+      - name: job_details_key
+        description: "Foreign key to the job details dimension."
+        tests:
+          - relationships:
+              to: ref('dim_job_details')
+              field: job_details_id
+
+      - name: employer_key
+        description: "Foreign key to the employer dimension."
+        tests:
+          - relationships:
+              to: ref('dim_employer')
+              field: employer_id
+
+      - name: auxiliary_key
+        description: "Foreign key to the auxiliary dimension."
+        tests:
+          - relationships:
+              to: ref('dim_auxiliary')
+              field: auxiliary_id
+
+      - name: vacancies
+        description: "Number of vacancies."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: number
+          - dbt_expectations.expect_column_quantile_values_to_be_between:
+              quantile: 0.99
+              min_value: 1
+              max_value: 20
+          - dbt_expectations.expect_column_max_to_be_between:
+              min_value: 1
+              max_value: 20
+              config:
+                severity: warn
+
+      - name: relevance
+        description: "Relevance score for the job ad."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: float
