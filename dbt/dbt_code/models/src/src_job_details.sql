@@ -1,21 +1,21 @@
 {{
   config(
     materialized = 'ephemeral',
-    )
+  )
 }}
 
-
-WITH stg_job_ads AS (SELECT * FROM {{ source('job_ads', 'stg_data_ads') }}
+WITH stg_job_ads AS (
+    SELECT * FROM {{ source('job_ads', 'stg_data_ads') }}
 )
 
 SELECT
     id,
-    headline,
-    description__text AS "DESCRIPTION",
-    description__text_formatted AS description_html_formatted,
-    employment_type__label AS employment_type,
-    duration__label AS duration,
-    salary_type__label AS salary_type,
-    scope_of_work__min AS scope_of_work_min,
-    scope_of_work__max AS scope_of_work_max
+    {{ capitalize_first_letter("coalesce(headline, 'Not specified')") }} AS headline,
+    coalesce(description__text, 'No description provided.') AS description,
+    coalesce(description__text_formatted, 'No description provided.') AS description_html_formatted,
+    {{ capitalize_first_letter("coalesce(employment_type__label, 'Not specified')") }} AS employment_type,
+    {{ capitalize_first_letter("coalesce(duration__label, 'Not specified')") }} AS duration,
+    {{ capitalize_first_letter("coalesce(salary_type__label, 'Not specified')") }} AS salary_type,
+    coalesce(scope_of_work__min, 0) AS scope_of_work_min,
+    coalesce(scope_of_work__max, 0) AS scope_of_work_max
 FROM stg_job_ads
