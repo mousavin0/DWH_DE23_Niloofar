@@ -2,7 +2,7 @@ WITH src_job_details AS (SELECT * FROM {{ ref('src_job_details') }})
 
 {# TODO: fill nulls #}
 
-SELECT
+SELECT distinct
     {{ dbt_utils.generate_surrogate_key(['id','headline']) }} AS job_details_id, 
     headline,
     description,
