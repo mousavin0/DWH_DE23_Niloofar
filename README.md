@@ -1,4 +1,5 @@
-# DWH_DE23_Niloofar
+# DWH_DE23
+# Niloofar Moosavi
 
 ## Project Overview
 
